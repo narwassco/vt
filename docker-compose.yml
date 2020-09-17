@@ -7,7 +7,7 @@ services:
      - db_user=postgres
      - db_password=$db_password
      - db_host=host.docker.internal
-     - db_post=5432
+     - db_port=5432
     volumes:
       - ./data:/tmp/src/data
       - ./public:/tmp/src/public
