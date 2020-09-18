@@ -1,7 +1,7 @@
 version: '2'
 services:
   nodejs:
-    image: narwassco/vt:v0.0.1
+    image: narwassco/vt:v0.0.2
     # build: .
     environment: 
      - db_user=postgres
