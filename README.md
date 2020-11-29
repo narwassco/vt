@@ -3,6 +3,7 @@
 ![GitHub](https://img.shields.io/github/license/narwassco/vt)
 ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/narwassco/vt)
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/narwassco/vt)
+![openAFRICA upload](https://github.com/narwassco/vt/workflows/openAFRICA%20upload/badge.svg)
 
 This is to manage vectortiles for Narok Water in Github pages.
 
