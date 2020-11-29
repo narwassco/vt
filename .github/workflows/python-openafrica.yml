@@ -3,8 +3,8 @@ name: openAFRICA upload
 on:
   push:
     branches: [ master ]
-    #paths:
-    #  - "data/**"
+    paths:
+      - "data/**"
 
 jobs:
   build:
