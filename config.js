@@ -622,6 +622,180 @@ module.exports = {
             ) AS feature
           ) AS featurecollection
           `
+        },
+        {
+          name: 'sewer_pipeline',
+          geojsonFileName: __dirname + '/sewer_pipeline.geojson',
+          select: `
+          SELECT row_to_json(featurecollection) AS json FROM (
+            SELECT
+              'FeatureCollection' AS type,
+              array_to_json(array_agg(feature)) AS features
+            FROM (
+              SELECT
+              'Feature' AS type,
+              ST_AsGeoJSON(ST_TRANSFORM(ST_MakeValid(x.geom),4326))::json AS geometry,
+              row_to_json((
+                SELECT t FROM (
+                SELECT
+                  16 as maxzoom,
+                  10 as minzoom
+                ) AS t
+              )) AS tippecanoe,
+              row_to_json((
+                SELECT p FROM (
+                SELECT
+                  x.id, 
+                  x.diameter, 
+                  x.material, 
+                  x.type, 
+                  x.pipeline_name, 
+                  x.pipeline_no, 
+                  x.sewer_zone, 
+                  x.remarks, 
+                  x.construction_date, 
+                  x.insert_date, 
+                  x.update_date
+                ) AS p
+              )) AS properties
+              FROM sewerage.sewer_pipeline x
+              WHERE NOT ST_IsEmpty(x.geom)
+            ) AS feature
+          ) AS featurecollection
+          `
+        },
+        {
+          name: 'sewer_connection',
+          geojsonFileName: __dirname + '/sewer_connection.geojson',
+          select:`
+          SELECT row_to_json(featurecollection) AS json FROM (
+            SELECT
+              'FeatureCollection' AS type,
+              array_to_json(array_agg(feature)) AS features
+            FROM (
+              SELECT
+              'Feature' AS type,
+              ST_AsGeoJSON(ST_TRANSFORM(x.geom,4326))::json AS geometry,
+              row_to_json((
+                SELECT t FROM (
+                  SELECT
+                    16 as maxzoom,
+                    16 as minzoom
+                ) AS t
+              )) AS tippecanoe,
+              row_to_json((
+                SELECT p FROM (
+                  SELECT
+                    x.id, 
+                    x.sewer_zone, 
+                    x.water_zone, 
+                    CASE WHEN x.water_connection_no=-1 THEN NULL ELSE LPAD(CAST(x.water_connection_no as text), 4, '0') END as water_connection_no,
+                    x.water_connected, 
+                    x.type, 
+                    x.name, 
+                    x.operator, 
+                    x.status, 
+                    x.remarks, 
+                    x.manhole_no_connected, 
+                    x.line_type, 
+                    x.construction_date, 
+                    x.insert_date, 
+                    x.update_date
+                ) AS p
+              )) AS properties
+              FROM sewerage.sewer_connection x
+              WHERE NOT ST_IsEmpty(x.geom)
+            ) AS feature
+          ) AS featurecollection
+          `
+        },
+        {
+          name: 'manhole',
+          geojsonFileName: __dirname + '/manhole.geojson',
+          select:`
+          SELECT row_to_json(featurecollection) AS json FROM (
+            SELECT
+              'FeatureCollection' AS type,
+              array_to_json(array_agg(feature)) AS features
+            FROM (
+              SELECT
+              'Feature' AS type,
+              ST_AsGeoJSON(ST_TRANSFORM(x.geom,4326))::json AS geometry,
+              row_to_json((
+                SELECT t FROM (
+                  SELECT
+                    16 as maxzoom,
+                    16 as minzoom
+                ) AS t
+              )) AS tippecanoe,
+              row_to_json((
+                SELECT p FROM (
+                  SELECT
+                    x.id, 
+                    x.pipeline_name, 
+                    x.pipeline_no, 
+                    x.sewer_zone, 
+                    x.depth, 
+                    x.manhole_material, 
+                    x.cover_material, 
+                    x.type, 
+                    x.cover_shape, 
+                    x.status, 
+                    x.remarks, 
+                    x.construction_date, 
+                    x.insert_date, 
+                    x.update_date
+                ) AS p
+              )) AS properties
+              FROM sewerage.manhole x
+              WHERE NOT ST_IsEmpty(x.geom)
+            ) AS feature
+          ) AS featurecollection
+          `
+        },
+        {
+          name: 'sewer_treatment_plant',
+          geojsonFileName: __dirname + '/sewer_treatment_plant.geojson',
+          select:`
+          SELECT row_to_json(featurecollection) AS json FROM (
+            SELECT
+              'FeatureCollection' AS type,
+              array_to_json(array_agg(feature)) AS features
+            FROM (
+              SELECT
+              'Feature' AS type,
+              ST_AsGeoJSON(ST_TRANSFORM(ST_MakeValid(x.geom),4326))::json AS geometry,
+              row_to_json((
+                SELECT t FROM (
+                  SELECT
+                    16 as maxzoom,
+                    10 as minzoom
+                ) AS t
+              )) AS tippecanoe,
+              row_to_json((
+                SELECT p FROM (
+                SELECT
+                	x.id, 
+                  x.design_capacity, 
+                  x.operation_capacity, 
+                  x.effluent_source, 
+                  x.inlet_meter, 
+                  x.inlet_meter_serial_no, 
+                  x.inlet_meter_size, 
+                  x.outlet_meter, 
+                  x.outlet_meter_serial_no, 
+                  x.outlet_meter_size, 
+                  x.remarks, 
+                  x.construction_date, 
+                  x.insert_date, 
+                  x.update_date
+              ) AS p
+              )) AS properties
+                FROM sewerage.sewer_treatment_plant x
+              WHERE NOT ST_IsEmpty(x.geom)
+            ) AS feature
+          ) AS featurecollection
+          `
         }
     ],
 };
