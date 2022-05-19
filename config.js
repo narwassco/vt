@@ -593,6 +593,13 @@ module.exports = {
               category as layer, 
               geom
             FROM places
+            UNION ALL
+            SELECT 
+              zone_code as masterid, 
+              zone as name, 
+              'sewer_zone' as layer,
+              ST_CENTROID(geom) as geom
+            FROM sewerage.sewer_zone
           )
           SELECT row_to_json(featurecollection) AS json FROM (
             SELECT
@@ -796,6 +803,40 @@ module.exports = {
             ) AS feature
           ) AS featurecollection
           `
-        }
+        },
+        {
+          name: 'sewer_zone',
+          geojsonFileName: __dirname + '/sewer_zone.geojson',
+          select:`
+          SELECT row_to_json(featurecollection) AS json FROM (
+            SELECT
+              'FeatureCollection' AS type,
+              array_to_json(array_agg(feature)) AS features
+            FROM (
+              SELECT
+              'Feature' AS type,
+              ST_AsGeoJSON(ST_TRANSFORM(x.geom,4326))::json AS geometry,
+              row_to_json((
+                SELECT t FROM (
+                  SELECT
+                    16 as maxzoom,
+                    10 as minzoom
+                ) AS t
+              )) AS tippecanoe,
+              row_to_json((
+                SELECT p FROM (
+                SELECT
+                  x.zone_code as fid,
+                  x.zone_code,
+                  x.zone_name,
+                  x.zone
+                ) AS p
+              )) AS properties
+              FROM sewerage.sewer_zone x
+              WHERE NOT ST_IsEmpty(x.geom)
+            ) AS feature
+          ) AS featurecollection
+          `
+        },
     ],
 };
