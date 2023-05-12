@@ -1,13 +1,14 @@
 version: '2'
 services:
   nodejs:
-    image: narwassco/vt:v0.0.2
+    image: ghcr.io/watergis/vt-boilerplate:v1.1.1
     # build: .
     environment: 
-     - db_user=postgres
+     - db_user=$db_user
      - db_password=$db_password
-     - db_host=host.docker.internal
-     - db_port=5432
+     - db_host=$db_host
+     - db_port=$db_port
+     - db_name=$db_name
     volumes:
       - ./data:/tmp/src/data
       - ./public:/tmp/src/public
