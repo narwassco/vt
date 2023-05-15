@@ -26,7 +26,7 @@ module.exports = {
                   SELECT
                   x.meterid as fid,
                   CASE WHEN x.connno=-1 THEN NULL ELSE LPAD(CAST(x.connno as text), 4, '0') || x.zonecd END as connno,
-                  x.serialno,
+                  b.serialno,
                   b.name as customer,
                   c.name as village
                 ) AS p
