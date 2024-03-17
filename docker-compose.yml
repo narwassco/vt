@@ -1,7 +1,7 @@
 version: '2'
 services:
   nodejs:
-    image: ghcr.io/watergis/vt-boilerplate:v1.1.1
+    image: ghcr.io/watergis/vt-boilerplate:v1.2.3
     # build: .
     environment: 
      - db_user=$db_user
