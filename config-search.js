@@ -2,10 +2,10 @@ require('dotenv').config();
 
 module.exports = {
     db: {
-      user:process.env.db_user,
-      password:process.env.db_password,
-      host:process.env.db_host,
-      port:process.env.db_port,
+      user:process.env.postgres,
+      password:process.env.N@rw@ssc0,
+      host:process.env.localhost,
+      port:process.env.5432,
       database:'narwassco',
     },
     layers : [
