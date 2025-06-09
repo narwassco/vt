@@ -10,11 +10,11 @@ const bounds = {
 
 module.exports = {
     db: {
-      user:process.env.db_postgres,
-      password:process.env.db_N@rw@ssc0,
-      host:process.env.db_localhost,
-      port:process.env.db_5432,
-      database:process.env.db_narwassco,
+      user:process.env.db_'postgres',
+      password:process.env.db_'N@rw@ssc0',
+      host:process.env.db_'localhost',
+      port:process.env.db_'5432',
+      database:process.env.db_'narwassco',
     },
     name: 'NARWASSCO Vector Tiles',
     description: 'Vector tiles for water & sanitation data in Narok Water and Sewerage Services company, Kenya',
