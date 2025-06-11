@@ -1,0 +1,37 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - "data/**"
+      - "public/**"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build mbtiles
+      run: |
+        docker run \
+        -v ./data:/tmp/src/data \
+        -v ./public:/tmp/src/public \
+        -v ./config.js:/tmp/src/config.js \
+        -v ./config-search.js:/tmp/src/config-search.js \
+        ${{ vars.DOCKER_IMAGE }} \
+        npm run extract
+
+        cp ./data/*.pmtiles ./public/
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      if: ${{ github.ref == 'refs/heads/master' }}
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: public # The folder the action should deploy.
+      
