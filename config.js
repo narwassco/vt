@@ -20,6 +20,7 @@ module.exports = {
     description: 'Vector tiles for water & sanitation data in Narok Water and Sewerage Services company, Kenya',
     attribution: '©Narok Water and Sewerage Services Co., Ltd.',
     mbtiles: __dirname + '/data/narok.mbtiles',
+    ghpages: __dirname + '/public/tiles',
     createPmtiles: true,
     minzoom: 10,
     maxzoom: 16,
